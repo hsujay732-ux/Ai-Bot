@@ -32,8 +32,16 @@ def duration(path):
     return float(json.loads(out)["format"]["duration"])
 
 
-async def tts(text, voice, rate, path):
-    await edge_tts.Communicate(text, voice, rate=rate).save(path)
+async def tts(text, voice, rate, path, tries=5):
+    for k in range(tries):
+        try:
+            await edge_tts.Communicate(text, voice, rate=rate).save(path)
+            if os.path.exists(path) and os.path.getsize(path) > 1000:
+                return
+        except Exception as e:
+            print(f"  retry {k + 1}/{tries}: {type(e).__name__}")
+        await asyncio.sleep(3 * (k + 1))
+    sys.exit("edge-tts se audio nahi mila. Thodi der baad dobara chalao.")
 
 
 async def list_voices():
