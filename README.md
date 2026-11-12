@@ -18,7 +18,7 @@ Free Hinglish AI voiceover for YouTube videos. Script do, video do, voice ke saa
 
 1. `input/script.txt` kholo → ✏️ edit → `[APNA RATIO]`, `[APNE TICKS]`, `[APNA R:R]` apne numbers se badlo → Commit.
 2. Commit karte hi **Actions** tab mein "Make voiceover" chalega (2-3 min).
-3. Run kholo → neeche **Artifacts → voiceover** download karo → `final.mp4` mil jayega.
+3. Kaam khatam hone pe `output/final.mp4` repo mein aa jayega (Artifacts → voiceover mein bhi).
 
 Voice ya speed badalni ho: Actions → Make voiceover → **Run workflow** → voice/rate bharo.
 
