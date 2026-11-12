@@ -32,7 +32,19 @@ python voice.py --voice hi-IN-MadhurNeural --rate +8%
 python voice.py --list                   # saari Indian voices
 ```
 
-## Voices
+
+## Realistic voice: Sarvam AI (recommended)
+
+Sarvam Bulbul v3 Indian model hai, Hinglish natural bolta hai. Signup pe ₹1,000 free credit milta hai, aur ek ~3 min video ~₹8 ka padta hai (lagbhag 100+ video free).
+
+1. https://dashboard.sarvam.ai pe signup karo → API key copy karo.
+2. GitHub repo → Settings → Secrets and variables → Actions → New repository secret
+   - Name: `SARVAM_API_KEY`  Value: tumhari key
+3. Bas. Ab har run Sarvam se banega (secret na ho toh free edge-tts pe chalega).
+
+Voices (Run workflow → voice): male `shubh` (default), `aditya`, `rahul`, `amit`, `kabir`, `rohan`; female `priya`, `neha`, `shreya`, `ishita`, `pooja`, `kavya`.
+
+## Free voices (edge-tts)
 
 | Voice | |
 |---|---|

@@ -13,7 +13,7 @@ Usage:
   python voice.py --rate +5%               # speak faster
   python voice.py --list                   # list Indian voices
 """
-import argparse, asyncio, os, re, subprocess, sys, json
+import argparse, asyncio, os, re, subprocess, sys, json, base64, time, urllib.request, urllib.error
 
 import edge_tts
 
@@ -44,6 +44,37 @@ async def tts(text, voice, rate, path, tries=5):
     sys.exit("edge-tts se audio nahi mila. Thodi der baad dobara chalao.")
 
 
+def sarvam_tts(text, speaker, pace, path, tries=4):
+    """Sarvam AI Bulbul v3 - most natural Hindi/Hinglish. Needs SARVAM_API_KEY."""
+    body = json.dumps({"text": text, "language_code": "hi-IN", "model": "bulbul:v3",
+                       "speaker": speaker, "pace": pace, "speech_sample_rate": 44100,
+                       "output_audio_codec": "wav"}).encode()
+    for k in range(tries):
+        req = urllib.request.Request("https://api.sarvam.ai/text-to-speech", data=body, method="POST",
+                                     headers={"Content-Type": "application/json",
+                                              "api-subscription-key": os.environ["SARVAM_API_KEY"]})
+        try:
+            with urllib.request.urlopen(req, timeout=120) as r:
+                data = json.loads(r.read())
+            with open(path, "wb") as f:
+                f.write(base64.b64decode(data["audios"][0]))
+            return
+        except urllib.error.HTTPError as e:
+            msg = e.read().decode(errors="ignore")[:300]
+            if e.code in (400, 401, 403):
+                sys.exit(f"Sarvam error {e.code}: {msg}")
+            print(f"  retry {k + 1}/{tries}: HTTP {e.code} {msg}")
+        except Exception as e:
+            print(f"  retry {k + 1}/{tries}: {type(e).__name__}")
+        time.sleep(3 * (k + 1))
+    sys.exit("Sarvam se audio nahi mila.")
+
+
+def pace_from_rate(rate):
+    m = re.match(r"([+-]?\d+)%", rate or "+0%")
+    return round(max(0.5, min(2.0, 1 + (int(m.group(1)) if m else 0) / 100)), 2)
+
+
 async def list_voices():
     for v in await edge_tts.list_voices():
         if v["Locale"] in ("hi-IN", "en-IN"):
@@ -56,7 +87,9 @@ def main():
     ap.add_argument("--scenes", default="input/scenes.txt")
     ap.add_argument("--video", default="input/video.mp4")
     ap.add_argument("--out", default="output")
-    ap.add_argument("--voice", default=os.environ.get("VOICE") or DEFAULT_VOICE)
+    ap.add_argument("--engine", default=os.environ.get("ENGINE") or "auto",
+                    help="auto (sarvam if SARVAM_API_KEY set, else edge), sarvam, edge")
+    ap.add_argument("--voice", default=os.environ.get("VOICE") or "")
     ap.add_argument("--rate", default=os.environ.get("RATE") or "+0%")
     ap.add_argument("--max-speedup", type=float, default=1.35,
                     help="if a section is longer than its scene, speed it up at most this much")
@@ -65,6 +98,12 @@ def main():
 
     if a.list:
         asyncio.run(list_voices()); return
+    if a.engine == "auto":
+        a.engine = "sarvam" if os.environ.get("SARVAM_API_KEY") else "edge"
+    if a.engine == "sarvam" and not os.environ.get("SARVAM_API_KEY"):
+        sys.exit("SARVAM_API_KEY set nahi hai.")
+    if not a.voice:
+        a.voice = "shubh" if a.engine == "sarvam" else DEFAULT_VOICE
 
     text = open(a.script, encoding="utf-8").read().strip()
     left = re.findall(r"\[[^\]]+\]", text)
@@ -82,11 +121,15 @@ def main():
             sys.exit(f"script.txt mein {len(sections)} sections hain lekin scenes.txt mein {len(scenes)} durations. "
                      "Dono barabar hone chahiye.")
 
-    print(f"voice={a.voice} rate={a.rate} sections={len(sections)}")
+    print(f"engine={a.engine} voice={a.voice} rate={a.rate} sections={len(sections)}")
     parts = []
     for i, s in enumerate(sections, 1):
-        raw = os.path.join(tmp, f"raw_{i:02d}.mp3")
-        asyncio.run(tts(" ".join(s.split()), a.voice, a.rate, raw))
+        if a.engine == "sarvam":
+            raw = os.path.join(tmp, f"raw_{i:02d}.wav")
+            sarvam_tts(s.strip(), a.voice, pace_from_rate(a.rate), raw)
+        else:
+            raw = os.path.join(tmp, f"raw_{i:02d}.mp3")
+            asyncio.run(tts(" ".join(s.split()), a.voice, a.rate, raw))
         if scenes is None:
             parts.append(raw); continue
         d = scenes[i - 1]

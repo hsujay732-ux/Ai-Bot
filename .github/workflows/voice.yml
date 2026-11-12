@@ -3,9 +3,12 @@ name: Make voiceover
 on:
   workflow_dispatch:
     inputs:
+      engine:
+        description: "auto / sarvam / edge (auto = sarvam if SARVAM_API_KEY secret exists)"
+        default: "auto"
       voice:
-        description: "Voice (hi-IN-MadhurNeural, hi-IN-SwaraNeural, en-IN-PrabhatNeural, en-IN-NeerjaNeural)"
-        default: "hi-IN-MadhurNeural"
+        description: "Blank = default. Sarvam: shubh, aditya, rahul, amit, kabir, priya, neha, shreya, ishita... Edge: hi-IN-MadhurNeural, hi-IN-SwaraNeural"
+        default: ""
       rate:
         description: "Speed, e.g. +0%, +10%, -5%"
         default: "+0%"
@@ -30,6 +33,8 @@ jobs:
           pip install -r requirements.txt
       - name: Make voice + video
         env:
+          SARVAM_API_KEY: ${{ secrets.SARVAM_API_KEY }}
+          ENGINE: ${{ github.event.inputs.engine }}
           VOICE: ${{ github.event.inputs.voice }}
           RATE: ${{ github.event.inputs.rate }}
         run: python voice.py
