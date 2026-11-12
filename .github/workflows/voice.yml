@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
     inputs:
       voice:
-        description: "Voice (en-IN-PrabhatNeural, en-IN-NeerjaNeural, hi-IN-MadhurNeural, hi-IN-SwaraNeural)"
-        default: "en-IN-PrabhatNeural"
+        description: "Voice (hi-IN-MadhurNeural, hi-IN-SwaraNeural, en-IN-PrabhatNeural, en-IN-NeerjaNeural)"
+        default: "hi-IN-MadhurNeural"
       rate:
         description: "Speed, e.g. +0%, +10%, -5%"
         default: "+0%"

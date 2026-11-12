@@ -36,12 +36,11 @@ python voice.py --list                   # saari Indian voices
 
 | Voice | |
 |---|---|
-| `en-IN-PrabhatNeural` | male, Roman Hinglish ke liye default |
-| `en-IN-NeerjaNeural` | female |
-| `hi-IN-MadhurNeural` | male, Hindi accent zyada |
-| `hi-IN-SwaraNeural` | female, Hindi accent zyada |
+| `hi-IN-MadhurNeural` | male, default — sabse natural |
+| `hi-IN-SwaraNeural` | female |
+| `en-IN-PrabhatNeural` / `en-IN-NeerjaNeural` | Indian English, Hindi ko robotic padhte hain |
 
-Dono try karo; Roman script Hinglish pe `en-IN` zyada saaf lagta hai, Devanagari script likhoge toh `hi-IN` best hai.
+**Script Devanagari mein likho** (English trading words jaise wall, delta, tape Roman mein reh sakte hain). Roman Hindi pe voice bhains jaisi lagti hai.
 
 ## Sync
 

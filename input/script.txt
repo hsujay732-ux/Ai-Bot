@@ -1,46 +1,46 @@
-Agar tum Binance futures trade karte ho,
-toh fake walls pe paisa gawana band karo.
-Entry se pehle dekho ki wall pe actually kya ho raha hai.
+अगर तुम Binance futures ट्रेड करते हो,
+तो fake walls पे पैसा गँवाना बंद करो।
+एंट्री से पहले देखो कि wall पे असल में क्या हो रहा है।
 
-Is video mein main dikhaunga ki DOM wall bounce kaise kaam karta hai,
-aur entry se pehle woh ek check jo zyada tar log skip kar dete hain.
+इस वीडियो में मैं दिखाऊँगा कि DOM wall bounce कैसे काम करता है,
+और एंट्री से पहले वो एक चेक, जो ज़्यादातर लोग स्किप कर देते हैं।
 
-Wall matlab order book ka woh level jahan size baaki levels se kaafi zyada hai.
-Main wall tab maanta hoon jab size average ka 10 guna ho.
-Bid side pe wall: possible support.
-Ask side pe wall: possible resistance.
+Wall मतलब order book का वो लेवल, जहाँ साइज़ बाकी लेवल्स से काफ़ी ज़्यादा है।
+मैं wall तब मानता हूँ, जब साइज़ एवरेज का दस गुना हो।
+Bid side पे wall, पॉसिबल सपोर्ट।
+Ask side पे wall, पॉसिबल रेज़िस्टेंस।
 
-Sabse common galti: price ne wall touch kiya, aur turant buy.
-Problem ye hai ki wall ek order hai, promise nahi.
-Price paas aate hi wall pull ho sakti hai,
-aur tum bina support ke trade mein phase ho.
+सबसे कॉमन गलती: प्राइस ने wall टच किया, और तुरंत buy।
+प्रॉब्लम ये है कि wall एक ऑर्डर है, प्रॉमिस नहीं।
+प्राइस पास आते ही wall pull हो सकती है,
+और तुम बिना सपोर्ट के ट्रेड में फँस जाते हो।
 
-Fake wall ka sign dekho.
-Price jaise jaise paas aata hai, wall ka size ghatne lagta hai,
-ya wall ek level aage-peeche shift hoti rehti hai.
-Real wall wahi khadi rehti hai jab price usse takrata hai.
+Fake wall का साइन देखो।
+प्राइस जैसे जैसे पास आता है, wall का साइज़ घटने लगता है,
+या wall एक लेवल आगे पीछे शिफ़्ट होती रहती है।
+Real wall वहीं खड़ी रहती है, जब प्राइस उससे टकराता है।
 
-Ab woh check jiska maine shuru mein promise kiya tha.
-Touch pe tape dekho.
-Market sells wall pe hit ho rahe hain,
-lekin wall ka size kam nahi ho raha, ya wapas refill ho raha hai.
-Iska matlab koi seller ko absorb kar raha hai.
-Yahi bounce ka asli signal hai.
+अब वो चेक, जिसका मैंने शुरू में प्रॉमिस किया था।
+टच पे tape देखो।
+मार्केट sells wall पे हिट हो रहे हैं,
+लेकिन wall का साइज़ कम नहीं हो रहा, या वापस refill हो रहा है।
+इसका मतलब कोई सेलर को absorb कर रहा है।
+यही bounce का असली सिग्नल है।
 
-Absorption ke baad price ko wall se upar uthne do.
-Delta buyers ki taraf flip ho, tab entry lo.
-Touch pe nahi, confirmation pe.
+Absorption के बाद प्राइस को wall से ऊपर उठने दो।
+Delta buyers की तरफ़ flip हो, तब एंट्री लो।
+टच पे नहीं, कन्फ़र्मेशन पे।
 
-Stop wall ke thoda neeche rakho, 2 ticks.
-Agar wall tooti, toh setup khatam.
-Wahan rukne ka koi reason nahi.
-Target: 1 is to 5 risk reward.
+Stop wall के थोड़ा नीचे रखो, दो ticks।
+अगर wall टूटी, तो सेटअप ख़त्म।
+वहाँ रुकने का कोई रीज़न नहीं।
+टारगेट: एक इज़ टू पाँच risk reward।
 
-Toh ye raha woh ek check:
-entry se pehle absorption dekho.
-Wall tiki rahe, sells uspe khape, phir price uthe.
-Tabhi andar jao.
-Poori checklist description mein hai.
+तो ये रहा वो एक चेक:
+एंट्री से पहले absorption देखो।
+Wall टिकी रहे, sells उस पे खपें, फिर प्राइस उठे।
+तभी अंदर जाओ।
+पूरी चेकलिस्ट डिस्क्रिप्शन में है।
 
-Agla video absorption ko tape pe detail mein padhne pe hai.
-Subscribe kar lo taaki miss na ho.
+अगला वीडियो absorption को tape पे डिटेल में पढ़ने पे है।
+सब्सक्राइब कर लो, ताकि मिस ना हो।

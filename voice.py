@@ -17,7 +17,7 @@ import argparse, asyncio, os, re, subprocess, sys, json
 
 import edge_tts
 
-DEFAULT_VOICE = "en-IN-PrabhatNeural"   # reads Roman-script Hinglish well; try hi-IN-MadhurNeural too
+DEFAULT_VOICE = "hi-IN-MadhurNeural"   # natural Hindi; write script in Devanagari (English terms can stay in Roman)
 
 
 def sh(cmd):
