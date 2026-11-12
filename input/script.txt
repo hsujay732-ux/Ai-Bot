@@ -1,0 +1,46 @@
+Agar tum Binance futures trade karte ho,
+toh fake walls pe paisa gawana band karo.
+Entry se pehle dekho ki wall pe actually kya ho raha hai.
+
+Is video mein main dikhaunga ki DOM wall bounce kaise kaam karta hai,
+aur entry se pehle woh ek check jo zyada tar log skip kar dete hain.
+
+Wall matlab order book ka woh level jahan size baaki levels se kaafi zyada hai.
+Main wall tab maanta hoon jab size average ka 10 guna ho.
+Bid side pe wall: possible support.
+Ask side pe wall: possible resistance.
+
+Sabse common galti: price ne wall touch kiya, aur turant buy.
+Problem ye hai ki wall ek order hai, promise nahi.
+Price paas aate hi wall pull ho sakti hai,
+aur tum bina support ke trade mein phase ho.
+
+Fake wall ka sign dekho.
+Price jaise jaise paas aata hai, wall ka size ghatne lagta hai,
+ya wall ek level aage-peeche shift hoti rehti hai.
+Real wall wahi khadi rehti hai jab price usse takrata hai.
+
+Ab woh check jiska maine shuru mein promise kiya tha.
+Touch pe tape dekho.
+Market sells wall pe hit ho rahe hain,
+lekin wall ka size kam nahi ho raha, ya wapas refill ho raha hai.
+Iska matlab koi seller ko absorb kar raha hai.
+Yahi bounce ka asli signal hai.
+
+Absorption ke baad price ko wall se upar uthne do.
+Delta buyers ki taraf flip ho, tab entry lo.
+Touch pe nahi, confirmation pe.
+
+Stop wall ke thoda neeche rakho, 2 ticks.
+Agar wall tooti, toh setup khatam.
+Wahan rukne ka koi reason nahi.
+Target: 1 is to 5 risk reward.
+
+Toh ye raha woh ek check:
+entry se pehle absorption dekho.
+Wall tiki rahe, sells uspe khape, phir price uthe.
+Tabhi andar jao.
+Poori checklist description mein hai.
+
+Agla video absorption ko tape pe detail mein padhne pe hai.
+Subscribe kar lo taaki miss na ho.
