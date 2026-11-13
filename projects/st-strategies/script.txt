@@ -1,0 +1,59 @@
+इस वीडियो में Smart Tape से दो strategies सीखेंगे: एक reversal, और एक continuation।
+दोनों में चार चीज़ें एक साथ use होंगी: tape, DOM, candlestick और footprint chart।
+एक बात पहले: कोई भी strategy guarantee नहीं देती। Live जाने से पहले इसे backtest और paper trade ज़रूर करना।
+
+पहले tape के tags समझो।
+BIG मतलब ये order आज के लगभग सबसे बड़े orders में से है, top एक percent।
+SLIP के साथ जो नंबर है, वो बताता है कि order ने कितने ticks खा लिए। SLIP ज़्यादा, मतलब buyer या seller बहुत जल्दी में है।
+और STOP tag तब आता है, जब ऐसा slip वाला order पिछले पाँच मिनट का नया high या low बना दे। यानी stop losses उड़ रहे हैं।
+
+अब छुपे हुए orders।
+ICE-S मतलब buyer ने जितना दिख रहा था उससे ज़्यादा भरा, यानी ask पे कोई छुपा seller बैठा है। ICE-B मतलब bid पे छुपा buyer।
+ABS मतलब level आधे से ज़्यादा भर गया, फिर भी वापस भर गया। कोई absorb कर रहा है।
+CLR मतलब trade ने पूरा level साफ़ कर दिया।
+और Fill बताता है level का कितना percent भरा, Unfill बताता है कितना order आगे slip हो गया।
+
+अब DOM।
+सफ़ेद box वाली wall, average से कई गुना बड़ी quantity है।
+PULL मतलब orders cancel हुए, STACK मतलब नए orders जुड़े, और SPOOF मतलब बड़ी wall बिना भरे गायब हो गई।
+LiveΔ बताता है पिछले दस seconds में market buy और sell में कौन आगे है।
+
+अब footprint chart।
+हर candle के अंदर हर price पे दो नंबर होते हैं: बाएँ sell volume, दाएँ buy volume।
+जब diagonal में एक तरफ़ तीन गुना से ज़्यादा हो, उसे imbalance कहते हैं।
+तीन या ज़्यादा imbalance एक के ऊपर एक हों, तो stacked imbalance, यानी वहाँ एक side ने कब्ज़ा किया है।
+
+अब पहली strategy: STOP ICE Trap, यानी reversal।
+Setup हमेशा किसी edge पे बनता है: range का high, पिछला swing high, या सफ़ेद box वाली ask wall।
+Step एक: price उस level के ऊपर जाता है, और tape में STOP tag आता है। मतलब breakout traders कूद गए और shorts के stops उड़े।
+Step दो: उसी level पे ICE-S या ABS दिखता है। Buyers खरीद रहे हैं, लेकिन कोई छुपा seller सब खा रहा है।
+
+Step तीन: STOP के बाद अगले तीस से साठ seconds में कोई नया high नहीं बनता। DOM में ask wall PULL नहीं होती, वहीं टिकी रहती है।
+Step चार: footprint देखो। Candle के top पे भारी buy volume है, लेकिन candle वापस level के नीचे बंद होती है। ये trapped buyers हैं।
+Trigger: price वापस level के नीचे आए, और पहला BIG sell print SLIP के साथ आए। यही short entry है।
+
+Stop loss STOP वाले high के दो ticks ऊपर।
+पहला target एक R पे आधी position बंद, फिर बाकी range के बीच या दूसरी तरफ़ की wall तक।
+Skip कब करना है: अगर ask wall पे CLR आ जाए, यानी wall सच में खा ली गई, तो ये reversal नहीं, breakout है। और अगर wall PULL या SPOOF हो जाए, तब भी skip।
+Long के लिए सब उल्टा: STOP नीचे, ICE-B, bid wall, और trapped sellers।
+
+अब दूसरी strategy: CLR Retest, यानी continuation।
+पहले trend देखो: पाँच मिनट पे higher highs और higher lows।
+Step एक: price ask wall पे आता है, और BIG buy prints SLIP के साथ wall को CLR कर देते हैं। Wall PULL नहीं हुई, सच में भरी गई। यही असली breakout है।
+Step दो: breakout candle के footprint में stacked buy imbalance होना चाहिए। ये buyers का zone है।
+
+Step तीन: अब इंतज़ार करो। Price वापस उसी CLR level या stacked imbalance zone पे आता है।
+इस pullback में sell prints छोटे होने चाहिए, SLIP कम, और level पे ICE-B या ABS दिखना चाहिए। DOM में bid पे STACK आना अच्छा sign है।
+Step चार: pullback candle zone में wick बनाए और ऊपर बंद हो।
+Trigger: ICE-B के बाद पहला BIG buy SLIP के साथ। यही long entry है।
+
+Stop loss stacked imbalance zone के नीचे, दो ticks buffer के साथ।
+Target पहले दो R, फिर हर नए stacked buy imbalance के नीचे stop trail करो।
+Invalidation: अगर पाँच मिनट की पूरी candle zone के नीचे बंद हो, या BIG sell CLR के साथ zone तोड़ दे, तो बाहर।
+Short के लिए सब उल्टा।
+
+आख़िर में तीन rules।
+एक: हर trade में fixed risk, जो तुम app में set करते हो।
+दो: इन दोनों को अपने data पे backtest करो, कम से कम सौ trades का record देखो, फिर paper, फिर live।
+तीन: हर trade का screenshot और note रखो। Win rate तुम्हारे data से आएगा, किसी वीडियो से नहीं।
+वीडियो काम का लगा तो subscribe कर लो।
