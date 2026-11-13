@@ -1,0 +1,43 @@
+बड़े प्लेयर्स, यानी institutions, अपना पूरा ऑर्डर एक साथ नहीं डालते। वो छुपा के एंट्री लेते हैं।
+लेकिन Smart Tape में उनके निशान तीन जगह दिखते हैं: tape, DOM और chart।
+इस वीडियो में तीनों पढ़ना सीखेंगे।
+
+पहले स्क्रीन समझो।
+ऊपर chart है, जिसमें candles और Big Trades के bubbles दिखते हैं।
+साइड में DOM है, यानी order book।
+और नीचे tape है, जहाँ हर market order live छपता है।
+
+Tape से शुरू करो।
+हर लाइन में time, price और volume का bar है।
+ज़्यादातर prints छोटे होते हैं।
+जब अचानक एक बहुत लंबा bar आए, जो बाकियों से कई गुना बड़ा हो, वो big print है।
+Fill बताता है कितना ऑर्डर भरा, और Unfill बताता है कितना बचा रह गया।
+
+अब DOM देखो।
+जिस price पे quantity एवरेज से तीन गुना या ज़्यादा है, वहाँ app सफ़ेद box बना देता है। ये wall है।
+साथ में Liquidity column है, जो बताता है उस price पे market buyers और sellers में से किसने ज़्यादा trade किया।
+
+अब असली खेल।
+मान लो price एक bid wall पे आया।
+Tape में लगातार market sells छप रहे हैं,
+लेकिन wall का size कम नहीं हो रहा, या बार बार वापस भर रहा है।
+मतलब कोई बड़ा buyer चुपचाप सारे sells खा रहा है। इसे absorption कहते हैं।
+Institution की entry अक्सर ऐसे ही दिखती है।
+
+अब chart पे confirm करो।
+उसी level पे Big Trades के बड़े bubbles दिखेंगे।
+और CVD देखो। CVD नीचे जा रहा है, लेकिन price नीचे नहीं जा रहा।
+मतलब sellers पूरा ज़ोर लगा रहे हैं, फिर भी price टिका है।
+
+जब तीनों एक साथ दिखें, तब entry का सोचो।
+Wall टिकी है, tape में absorption है, chart पे big trades और CVD divergence है।
+Entry तब लो जब price wall से ऊपर उठने लगे।
+Stop wall के थोड़ा नीचे रखो।
+
+दो गलतियाँ मत करना।
+पहली, सिर्फ़ एक big print देख के मत कूदो। वो किसी का stop loss भी हो सकता है।
+दूसरी, हर wall असली नहीं होती। Price पास आते ही गायब हो जाए, तो वो fake थी।
+
+Checklist याद रखो: wall, absorption, big trades, CVD, फिर entry।
+और याद रखो, ये probability है, guarantee नहीं।
+वीडियो काम का लगा तो subscribe कर लो।

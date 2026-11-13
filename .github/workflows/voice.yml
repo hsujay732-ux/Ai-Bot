@@ -3,6 +3,9 @@ name: Make voiceover
 on:
   workflow_dispatch:
     inputs:
+      dir:
+        description: "Project folder (script.txt, scenes.txt, video.mp4)"
+        default: "input"
       engine:
         description: "auto / sarvam / edge (auto = sarvam if SARVAM_API_KEY secret exists)"
         default: "auto"
@@ -37,17 +40,18 @@ jobs:
           ENGINE: ${{ github.event.inputs.engine }}
           VOICE: ${{ github.event.inputs.voice }}
           RATE: ${{ github.event.inputs.rate }}
-        run: python voice.py
+        run: |
+          D="${{ github.event.inputs.dir || 'input' }}"
+          python voice.py --script "$D/script.txt" --scenes "$D/scenes.txt" --video "$D/video.mp4"
       - uses: actions/upload-artifact@v4
         with:
           name: voiceover
-          path: |
-            output/final.mp4
-            output/voice.m4a
+          path: output/
+          if-no-files-found: ignore
       - name: Save final video to repo
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f output/final.mp4 output/voice.m4a
+          git add -f output/final.mp4 output/voice.m4a 2>/dev/null || git add -f output/voice.m4a
           git commit -m "Voiceover output [skip ci]" || exit 0
           git push
