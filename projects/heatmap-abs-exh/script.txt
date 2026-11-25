@@ -1,0 +1,38 @@
+Heatmap पे absorption और exhaustion पहचानना सीखते हैं।
+Heatmap पे दो चीज़ें होती हैं: चमकदार पट्टियाँ, और bubbles।
+इन्हीं दोनों की लड़ाई से reversal का पता चलता है।
+
+पहले basics।
+चमकदार पट्टी मतलब उस price पे limit orders की liquidity। जितनी चमकदार, उतनी ज़्यादा liquidity।
+Bubble मतलब market order जो सच में चला। Green bubble buy, red bubble sell। और जितना बड़ा bubble, उतना बड़ा order।
+
+अब absorption।
+Price नीचे आ के एक चमकदार bid पट्टी पे पहुँचता है।
+वहाँ लगातार बड़े red bubbles गिरते हैं, यानी sellers पूरा ज़ोर लगा रहे हैं।
+लेकिन पट्टी फीकी नहीं होती। या फीकी हो के तुरंत वापस चमक जाती है।
+मतलब कोई बड़ा buyer सारी selling खा रहा है।
+
+Entry कब?
+जब red bubbles छोटे होने लगें, और पहला बड़ा green bubble आए, और price पट्टी से ऊपर उठे।
+तब long, और stop loss पट्टी के नीचे।
+
+अब exhaustion।
+Move की शुरुआत में बड़े green bubbles होते हैं।
+जैसे जैसे price ऊपर जाता है, bubbles छोटे और कम होते जाते हैं।
+नया high लगभग बिना bubble के बनता है।
+और अक्सर ऊपर एक नई ask पट्टी चमकने लगती है।
+मतलब buyers थक गए। आगे धकेलने वाला कोई नहीं।
+
+Entry कब?
+जब पहला बड़ा red bubble आए, और price पिछले छोटे high के नीचे आ जाए।
+तब short, और stop loss high के ऊपर।
+
+अब तीन धोखे पहचानो।
+अगर bubbles के साथ पट्टी धीरे धीरे फीकी हो के ख़त्म हो जाए, तो ये consumption है। Breakout आएगा, reversal नहीं।
+अगर price आने से पहले ही पट्टी बिना किसी bubble के गायब हो जाए, तो वो spoof था।
+और अगर bubbles छोटे हैं लेकिन price तेज़ी से भाग रहा है, तो आगे liquidity ही नहीं है। वो exhaustion नहीं है।
+
+एक लाइन में याद रखो।
+Absorption में बड़े bubbles आते हैं, पर पट्टी नहीं टूटती।
+Exhaustion में bubbles ही ख़त्म हो जाते हैं।
+वीडियो काम का लगा तो subscribe कर लो।
