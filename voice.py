@@ -106,6 +106,12 @@ def eleven_tts(text, voice_id, path, prev_text="", tries=4):
 
 
 _CLONE = None
+def _cfg(ref):
+    """Optional voices/<name>.json next to the reference wav: exaggeration, cfg_weight, fx."""
+    j = os.path.splitext(ref)[0] + ".json"
+    return json.load(open(j)) if os.path.exists(j) else {}
+
+
 def clone_tts(text, ref, path):
     """Zero-shot voice clone (Chatterbox Multilingual, MIT). Runs on CPU in GitHub Actions."""
     global _CLONE
@@ -137,7 +143,8 @@ def clone_tts(text, ref, path):
         t0 = time.time()
         with torch.inference_mode():
             try:
-                w = _CLONE.generate(c, language_id="hi", audio_prompt_path=ref, exaggeration=0.5, cfg_weight=0.5)
+                w = _CLONE.generate(c, language_id="hi", audio_prompt_path=ref,
+                                    exaggeration=_cfg(ref).get("exaggeration", 0.5), cfg_weight=_cfg(ref).get("cfg_weight", 0.5))
             except TypeError:
                 w = _CLONE.generate(c, language_id="hi", audio_prompt_path=ref)
         w = w.detach().cpu()
@@ -222,6 +229,7 @@ def main():
         else:
             raw = os.path.join(tmp, f"raw_{i:02d}.mp3")
             asyncio.run(tts(" ".join(s.split()), a.voice, a.rate, raw, pitch=a.pitch))
+        if a.engine == "clone" and not a.fx: a.fx = _cfg(a.voice).get("fx", "")
         if a.fx in FX:
             fxo = os.path.join(tmp, f"fx_{i:02d}.wav")
             sh(["ffmpeg", "-y", "-loglevel", "error", "-i", raw, "-af", FX[a.fx], "-ar", "48000", fxo])
