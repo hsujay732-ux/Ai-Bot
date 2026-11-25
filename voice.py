@@ -32,10 +32,18 @@ def duration(path):
     return float(json.loads(out)["format"]["duration"])
 
 
-async def tts(text, voice, rate, path, tries=5):
+FX = {
+    "warm": "highpass=f=60,equalizer=f=110:t=q:w=1:g=4,equalizer=f=250:t=q:w=1.2:g=1.5,"
+            "equalizer=f=3200:t=q:w=2:g=-2,equalizer=f=7500:t=q:w=2:g=-4,"
+            "acompressor=threshold=-22dB:ratio=3:attack=6:release=90:makeup=3,"
+            "aecho=0.85:0.6:28:0.07,loudnorm=I=-16:TP=-1.5:LRA=9",
+}
+
+
+async def tts(text, voice, rate, path, tries=5, pitch="+0Hz"):
     for k in range(tries):
         try:
-            await edge_tts.Communicate(text, voice, rate=rate).save(path)
+            await edge_tts.Communicate(text, voice, rate=rate, pitch=pitch).save(path)
             if os.path.exists(path) and os.path.getsize(path) > 1000:
                 return
         except Exception as e:
@@ -160,6 +168,8 @@ def main():
                     help="auto (sarvam if SARVAM_API_KEY set, else edge), sarvam, edge, clone (voices/*.wav), eleven (ElevenLabs voice ID)")
     ap.add_argument("--voice", default=os.environ.get("VOICE") or "")
     ap.add_argument("--rate", default=os.environ.get("RATE") or "+0%")
+    ap.add_argument("--pitch", default=os.environ.get("PITCH") or "+0Hz", help="edge voices only, e.g. -8Hz")
+    ap.add_argument("--fx", default=os.environ.get("FX") or "", help="audio effect preset: warm")
     ap.add_argument("--max-speedup", type=float, default=1.35,
                     help="if a section is longer than its scene, speed it up at most this much")
     ap.add_argument("--list", action="store_true")
@@ -197,7 +207,7 @@ def main():
             sys.exit(f"script.txt mein {len(sections)} sections hain lekin scenes.txt mein {len(scenes)} durations. "
                      "Dono barabar hone chahiye.")
 
-    print(f"engine={a.engine} voice={a.voice} rate={a.rate} sections={len(sections)}")
+    print(f"engine={a.engine} voice={a.voice} rate={a.rate} pitch={a.pitch} fx={a.fx or '-'} sections={len(sections)}")
     parts = []
     for i, s in enumerate(sections, 1):
         if a.engine == "eleven":
@@ -211,7 +221,11 @@ def main():
             sarvam_tts(s.strip(), a.voice, pace_from_rate(a.rate), raw)
         else:
             raw = os.path.join(tmp, f"raw_{i:02d}.mp3")
-            asyncio.run(tts(" ".join(s.split()), a.voice, a.rate, raw))
+            asyncio.run(tts(" ".join(s.split()), a.voice, a.rate, raw, pitch=a.pitch))
+        if a.fx in FX:
+            fxo = os.path.join(tmp, f"fx_{i:02d}.wav")
+            sh(["ffmpeg", "-y", "-loglevel", "error", "-i", raw, "-af", FX[a.fx], "-ar", "48000", fxo])
+            raw = fxo
         if scenes is None:
             parts.append(raw); continue
         d = scenes[i - 1]

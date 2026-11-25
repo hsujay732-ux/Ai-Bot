@@ -1,0 +1,4 @@
+नमस्ते दोस्तों, मैं हूँ सुजय।
+इस चैनल पे हम trading को आसान भाषा में समझते हैं: footprint chart, DOM, tape, और order flow।
+क्या आपने कभी सोचा है कि बड़े players अपनी entry कैसे छुपाते हैं?
+Stop loss पहले, profit बाद में।

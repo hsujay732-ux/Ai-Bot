@@ -15,6 +15,12 @@ on:
       rate:
         description: "Speed, e.g. +0%, +10%, -5%"
         default: "+0%"
+      pitch:
+        description: "Pitch (edge voices), e.g. -8Hz"
+        default: "+0Hz"
+      fx:
+        description: "Audio effect: warm (bhaari, soft narrator) ya blank"
+        default: ""
   push:
     paths:
       - "input/**"
@@ -48,6 +54,8 @@ jobs:
           ENGINE: ${{ github.event.inputs.engine }}
           VOICE: ${{ github.event.inputs.voice }}
           RATE: ${{ github.event.inputs.rate }}
+          PITCH: ${{ github.event.inputs.pitch }}
+          FX: ${{ github.event.inputs.fx }}
         run: |
           D="${{ github.event.inputs.dir || 'input' }}"
           python voice.py --script "$D/script.txt" --scenes "$D/scenes.txt" --video "$D/video.mp4"
