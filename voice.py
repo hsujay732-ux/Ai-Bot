@@ -70,6 +70,48 @@ def sarvam_tts(text, speaker, pace, path, tries=4):
     sys.exit("Sarvam se audio nahi mila.")
 
 
+_CLONE = None
+def clone_tts(text, ref, path):
+    """Zero-shot voice clone (Chatterbox Multilingual, MIT). Runs on CPU in GitHub Actions."""
+    global _CLONE
+    import torch, torchaudio
+    if _CLONE is None:
+        _orig = torch.load
+        def _load(*a, **k):
+            k.setdefault("map_location", "cpu"); return _orig(*a, **k)
+        torch.load = _load
+        torch.set_num_threads(os.cpu_count() or 4)
+        from chatterbox.mtl_tts import ChatterboxMultilingualTTS
+        _CLONE = ChatterboxMultilingualTTS.from_pretrained(device="cpu")
+    parts = [p.strip() for p in re.split(r"(?<=[।?!.])\s+|\n", text) if p.strip()]
+    chunks = []
+    for p in parts:
+        if len(p) <= 220:
+            chunks.append(p); continue
+        cur = ""
+        for piece in re.split(r"(?<=,)\s+", p):
+            if cur and len(cur) + len(piece) > 200:
+                chunks.append(cur); cur = piece
+            else:
+                cur = (cur + " " + piece).strip()
+        if cur: chunks.append(cur)
+    sr = _CLONE.sr
+    gap = torch.zeros(1, int(sr * 0.28))
+    out = []
+    for c in chunks:
+        t0 = time.time()
+        with torch.inference_mode():
+            try:
+                w = _CLONE.generate(c, language_id="hi", audio_prompt_path=ref, exaggeration=0.5, cfg_weight=0.5)
+            except TypeError:
+                w = _CLONE.generate(c, language_id="hi", audio_prompt_path=ref)
+        w = w.detach().cpu()
+        if w.dim() == 1: w = w.unsqueeze(0)
+        out += [w, gap]
+        print(f"    clone: {len(c)} chars -> {w.shape[-1] / sr:.1f}s audio in {time.time() - t0:.0f}s", flush=True)
+    torchaudio.save(path, torch.cat(out, dim=-1), sr)
+
+
 def pace_from_rate(rate):
     m = re.match(r"([+-]?\d+)%", rate or "+0%")
     return round(max(0.5, min(2.0, 1 + (int(m.group(1)) if m else 0) / 100)), 2)
@@ -88,7 +130,7 @@ def main():
     ap.add_argument("--video", default="input/video.mp4")
     ap.add_argument("--out", default="output")
     ap.add_argument("--engine", default=os.environ.get("ENGINE") or "auto",
-                    help="auto (sarvam if SARVAM_API_KEY set, else edge), sarvam, edge")
+                    help="auto (sarvam if SARVAM_API_KEY set, else edge), sarvam, edge, clone (voices/*.wav)")
     ap.add_argument("--voice", default=os.environ.get("VOICE") or "")
     ap.add_argument("--rate", default=os.environ.get("RATE") or "+0%")
     ap.add_argument("--max-speedup", type=float, default=1.35,
@@ -103,7 +145,9 @@ def main():
     if a.engine == "sarvam" and not os.environ.get("SARVAM_API_KEY"):
         sys.exit("SARVAM_API_KEY set nahi hai.")
     if not a.voice:
-        a.voice = "shubh" if a.engine == "sarvam" else DEFAULT_VOICE
+        a.voice = {"sarvam": "shubh", "clone": "voices/sujay.wav"}.get(a.engine, DEFAULT_VOICE)
+    if a.engine == "clone" and not os.path.exists(a.voice):
+        sys.exit(f"Clone reference audio nahi mila: {a.voice}")
 
     text = open(a.script, encoding="utf-8").read().strip()
     left = re.findall(r"\[[^\]]+\]", text)
@@ -124,7 +168,10 @@ def main():
     print(f"engine={a.engine} voice={a.voice} rate={a.rate} sections={len(sections)}")
     parts = []
     for i, s in enumerate(sections, 1):
-        if a.engine == "sarvam":
+        if a.engine == "clone":
+            raw = os.path.join(tmp, f"raw_{i:02d}.wav")
+            clone_tts(s.strip(), a.voice, raw)
+        elif a.engine == "sarvam":
             raw = os.path.join(tmp, f"raw_{i:02d}.wav")
             sarvam_tts(s.strip(), a.voice, pace_from_rate(a.rate), raw)
         else:

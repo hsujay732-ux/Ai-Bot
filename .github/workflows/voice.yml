@@ -7,10 +7,10 @@ on:
         description: "Project folder (script.txt, scenes.txt, video.mp4)"
         default: "input"
       engine:
-        description: "auto / sarvam / edge (auto = sarvam if SARVAM_API_KEY secret exists)"
+        description: "auto / sarvam / edge / clone (clone = apni voice, voices/sujay.wav)"
         default: "auto"
       voice:
-        description: "Blank = default. Sarvam: shubh, aditya, rahul, amit, kabir, priya, neha, shreya, ishita... Edge: hi-IN-MadhurNeural, hi-IN-SwaraNeural"
+        description: "Blank = default. Clone: voices/sujay.wav. Sarvam: shubh, aditya, rahul, amit, kabir, priya, neha, shreya, ishita... Edge: hi-IN-MadhurNeural, hi-IN-SwaraNeural"
         default: ""
       rate:
         description: "Speed, e.g. +0%, +10%, -5%"
@@ -25,15 +25,22 @@ permissions:
 jobs:
   voice:
     runs-on: ubuntu-latest
+    timeout-minutes: 240
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+      - uses: actions/cache@v4
+        if: github.event.inputs.engine == 'clone'
+        with:
+          path: ~/.cache/huggingface
+          key: hf-chatterbox-mtl
       - name: Install
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
           pip install -r requirements.txt
+          if [ "${{ github.event.inputs.engine }}" = "clone" ]; then pip install chatterbox-tts; fi
       - name: Make voice + video
         env:
           SARVAM_API_KEY: ${{ secrets.SARVAM_API_KEY }}
