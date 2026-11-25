@@ -1,0 +1,40 @@
+Footprint chart पे दो चीज़ें reversal से पहले सबसे ज़्यादा दिखती हैं: absorption और exhaustion।
+दोनों का नतीजा एक जैसा है, लेकिन footprint पे दोनों बिल्कुल उल्टे दिखते हैं।
+Absorption में extreme पे volume बहुत ज़्यादा होता है, और exhaustion में बहुत कम।
+
+पहले footprint को याद कर लो।
+हर candle के अंदर हर price पे दो नंबर होते हैं। बाएँ market sell का volume, दाएँ market buy का volume।
+इन नंबरों से पता चलता है कि candle के अंदर किस price पे कौन लड़ रहा था।
+
+अब absorption।
+मान लो price नीचे जा रहा है, और market sellers लगातार बेच रहे हैं।
+लेकिन bid पे एक बड़ा buyer बैठा है, जो सारा selling खा जा रहा है।
+Footprint में candle के low के दो तीन levels पे sell volume बाकी candle से कई गुना बड़ा दिखेगा।
+Delta बहुत negative होगा, फिर भी price नीचे नहीं जाता। Candle नीचे wick छोड़ के बंद होती है।
+
+Absorption को confirm कैसे करें?
+Tape में उसी level पे ICE-B या ABS tag दिखेगा।
+DOM में bid wall भरने के बाद भी कम नहीं होगी, या वापस refill हो जाएगी।
+और अगली candle उस low को तोड़ नहीं पाएगी।
+Entry तब लो जब buyers SLIP के साथ आएँ। Stop loss absorption zone के दो ticks नीचे।
+
+अब exhaustion।
+मान लो price ऊपर जा रहा है। हर candle पे buying कम होती जा रही है।
+और नए high पे volume लगभग zero हो जाता है, जैसे शून्य गुणा दो।
+मतलब ये high बिना participation के बना। आगे धकेलने वाला कोई नहीं बचा।
+इसे finished auction कहते हैं, और ऐसे high को market अक्सर छोड़ के नीचे आता है।
+
+Exhaustion को confirm कैसे करें?
+नए high पे tape में BIG prints और SLIP गायब हो जाते हैं।
+LiveΔ घटते घटते zero या negative हो जाता है।
+Entry तब लो जब पहला BIG sell SLIP के साथ आए। Stop loss high के दो ticks ऊपर।
+
+तो फ़र्क याद रखो।
+Absorption मतलब extreme पे भारी volume, कोई बड़ा player रोक रहा है।
+Exhaustion मतलब extreme पे लगभग zero volume, धकेलने वाला ख़त्म।
+
+तीन गलतियाँ मत करना।
+एक: बीच range में इन्हें मत खोजो। सिर्फ़ wall, पिछले swing, VAH, VAL या VWAP जैसे level पे देखो।
+दो: एक candle देख के entry मत लो। Absorber भर के हट भी सकता है, अगली candle का confirmation लो।
+तीन: अगर high पे दोनों तरफ़ volume है, तो वो unfinished auction है, exhaustion नहीं। Price वहाँ वापस आ सकता है।
+वीडियो काम का लगा तो subscribe कर लो।
