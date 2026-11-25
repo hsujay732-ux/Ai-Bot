@@ -33,6 +33,7 @@ def duration(path):
 
 
 FX = {
+    "narrator": "afftdn=nf=-45:nr=20:tn=1,agate=threshold=0.015:ratio=4:attack=3:release=150:range=0.06,silenceremove=start_periods=1:start_threshold=-40dB:stop_periods=-1:stop_duration=0.2:stop_threshold=-38dB:stop_silence=0.12,atempo=1.04,highpass=f=60,equalizer=f=110:t=q:w=1:g=2,equalizer=f=7500:t=q:w=2:g=-2,acompressor=threshold=-22dB:ratio=2.5:attack=6:release=90:makeup=2,loudnorm=I=-16:TP=-1.5:LRA=9",
     "warm": "highpass=f=60,equalizer=f=110:t=q:w=1:g=4,equalizer=f=250:t=q:w=1.2:g=1.5,"
             "equalizer=f=3200:t=q:w=2:g=-2,equalizer=f=7500:t=q:w=2:g=-4,"
             "acompressor=threshold=-22dB:ratio=3:attack=6:release=90:makeup=3,"
@@ -137,7 +138,7 @@ def clone_tts(text, ref, path):
                 cur = (cur + " " + piece).strip()
         if cur: chunks.append(cur)
     sr = _CLONE.sr
-    gap = torch.zeros(1, int(sr * 0.28))
+    gap = torch.zeros(1, int(sr * 0.12))
     out = []
     for c in chunks:
         t0 = time.time()
