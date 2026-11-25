@@ -7,10 +7,10 @@ on:
         description: "Project folder (script.txt, scenes.txt, video.mp4)"
         default: "input"
       engine:
-        description: "auto / sarvam / edge / clone (clone = apni voice, voices/sujay.wav)"
+        description: "auto / sarvam / edge / clone / eleven (eleven = ElevenLabs, voice me Voice ID do)"
         default: "auto"
       voice:
-        description: "Blank = default. Clone: voices/sujay.wav. Sarvam: shubh, aditya, rahul, amit, kabir, priya, neha, shreya, ishita... Edge: hi-IN-MadhurNeural, hi-IN-SwaraNeural"
+        description: "Blank = default. Eleven: Voice ID. Clone: voices/sujay.wav. Sarvam: shubh, aditya, rahul, amit, kabir, priya, neha, shreya, ishita... Edge: hi-IN-MadhurNeural, hi-IN-SwaraNeural"
         default: ""
       rate:
         description: "Speed, e.g. +0%, +10%, -5%"
@@ -44,6 +44,7 @@ jobs:
       - name: Make voice + video
         env:
           SARVAM_API_KEY: ${{ secrets.SARVAM_API_KEY }}
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
           ENGINE: ${{ github.event.inputs.engine }}
           VOICE: ${{ github.event.inputs.voice }}
           RATE: ${{ github.event.inputs.rate }}

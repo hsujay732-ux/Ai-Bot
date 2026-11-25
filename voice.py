@@ -70,6 +70,33 @@ def sarvam_tts(text, speaker, pace, path, tries=4):
     sys.exit("Sarvam se audio nahi mila.")
 
 
+def eleven_tts(text, voice_id, path, prev_text="", tries=4):
+    """ElevenLabs TTS. Needs ELEVENLABS_API_KEY; voice = voice ID from ElevenLabs Voices page."""
+    model = os.environ.get("ELEVEN_MODEL") or "eleven_multilingual_v2"
+    body = {"text": text, "model_id": model,
+            "voice_settings": {"stability": 0.5, "similarity_boost": 0.8, "style": 0.2, "use_speaker_boost": True}}
+    if prev_text: body["previous_text"] = prev_text[-300:]
+    for k in range(tries):
+        req = urllib.request.Request(
+            f"https://api.elevenlabs.io/v1/text-to-speech/{voice_id}?output_format=mp3_44100_128",
+            data=json.dumps(body).encode(), method="POST",
+            headers={"Content-Type": "application/json", "Accept": "audio/mpeg",
+                     "xi-api-key": os.environ["ELEVENLABS_API_KEY"]})
+        try:
+            with urllib.request.urlopen(req, timeout=180) as r:
+                open(path, "wb").write(r.read())
+            return
+        except urllib.error.HTTPError as e:
+            msg = e.read().decode(errors="ignore")[:400]
+            if e.code in (400, 401, 402, 403, 404, 422):
+                sys.exit(f"ElevenLabs error {e.code}: {msg}")
+            print(f"  retry {k + 1}/{tries}: HTTP {e.code} {msg}")
+        except Exception as e:
+            print(f"  retry {k + 1}/{tries}: {type(e).__name__}")
+        time.sleep(4 * (k + 1))
+    sys.exit("ElevenLabs se audio nahi mila.")
+
+
 _CLONE = None
 def clone_tts(text, ref, path):
     """Zero-shot voice clone (Chatterbox Multilingual, MIT). Runs on CPU in GitHub Actions."""
@@ -130,7 +157,7 @@ def main():
     ap.add_argument("--video", default="input/video.mp4")
     ap.add_argument("--out", default="output")
     ap.add_argument("--engine", default=os.environ.get("ENGINE") or "auto",
-                    help="auto (sarvam if SARVAM_API_KEY set, else edge), sarvam, edge, clone (voices/*.wav)")
+                    help="auto (sarvam if SARVAM_API_KEY set, else edge), sarvam, edge, clone (voices/*.wav), eleven (ElevenLabs voice ID)")
     ap.add_argument("--voice", default=os.environ.get("VOICE") or "")
     ap.add_argument("--rate", default=os.environ.get("RATE") or "+0%")
     ap.add_argument("--max-speedup", type=float, default=1.35,
@@ -146,6 +173,11 @@ def main():
         sys.exit("SARVAM_API_KEY set nahi hai.")
     if not a.voice:
         a.voice = {"sarvam": "shubh", "clone": "voices/sujay.wav"}.get(a.engine, DEFAULT_VOICE)
+    if a.engine == "eleven":
+        if not os.environ.get("ELEVENLABS_API_KEY"):
+            sys.exit("ELEVENLABS_API_KEY secret set nahi hai.")
+        if not a.voice or a.voice.startswith(("hi-IN", "en-IN")):
+            sys.exit("ElevenLabs ke liye voice = Voice ID do (ElevenLabs > Voices > ID copy).")
     if a.engine == "clone" and not os.path.exists(a.voice):
         sys.exit(f"Clone reference audio nahi mila: {a.voice}")
 
@@ -168,7 +200,10 @@ def main():
     print(f"engine={a.engine} voice={a.voice} rate={a.rate} sections={len(sections)}")
     parts = []
     for i, s in enumerate(sections, 1):
-        if a.engine == "clone":
+        if a.engine == "eleven":
+            raw = os.path.join(tmp, f"raw_{i:02d}.mp3")
+            eleven_tts(s.strip(), a.voice, raw, prev_text=sections[i - 2] if i > 1 else "")
+        elif a.engine == "clone":
             raw = os.path.join(tmp, f"raw_{i:02d}.wav")
             clone_tts(s.strip(), a.voice, raw)
         elif a.engine == "sarvam":

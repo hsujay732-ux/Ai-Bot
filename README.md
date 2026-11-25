@@ -33,6 +33,15 @@ python voice.py --list                   # saari Indian voices
 ```
 
 
+## ElevenLabs voice
+
+1. elevenlabs.io pe account → Voices se koi voice (ya apna clone) chuno → **Voice ID** copy karo.
+2. Profile → API Keys → key banao.
+3. GitHub repo → Settings → Secrets and variables → Actions → New repository secret: `ELEVENLABS_API_KEY`.
+4. Actions → Make voiceover → Run workflow: engine `eleven`, voice = Voice ID.
+
+Commercial use (YouTube monetization) aur apni voice clone ke liye Starter ya upar ka plan chahiye. Free plan pe attribution zaroori hai.
+
 ## Realistic voice: Sarvam AI (recommended)
 
 Sarvam Bulbul v3 Indian model hai, Hinglish natural bolta hai. Signup pe ₹1,000 free credit milta hai, aur ek ~3 min video ~₹8 ka padta hai (lagbhag 100+ video free).
